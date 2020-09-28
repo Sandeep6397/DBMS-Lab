@@ -1,0 +1,38 @@
+**Schema (MySQL v5.7)**
+
+    create table STUDENT(SSN integer,Name varchar(20),Major varchar(10),Bdate Date,primary key(SSN));
+    create table COURSE(Courseno integer,Cname varchar(20),Dept varchar(10),primary key(Courseno));
+    create table TEXT1(Book_ISBN integer,Book_Title varchar(20),Publisher varchar(20),Author varchar(20),primary key(Book_ISBN));                
+    create table BOOK_ADOPTION(Courseno integer,Quarter integer,Book_ISBN integer,primary key(Courseno,Quarter),foreign key(Courseno) references COURSE(Courseno),foreign key(Book_ISBN) references TEXT1(Book_ISBN));
+    create table ENROLL(SSN integer,Courseno integer,Quarter integer,Grade varchar(10),primary key(SSN,Courseno,Quarter),foreign key(SSN) references STUDENT(SSN),foreign key(Courseno,Quarter) references BOOK_ADOPTION(Courseno,Quarter));      
+    insert into STUDENT values(100,'Name1','CS','2010-05-09'); 
+    insert into STUDENT values(101,'Name2','IS','2011-04-07');                                                                                       
+    insert into STUDENT values(102,'Name3','EC','2012-03-06');                                                                                       
+    insert into STUDENT values(103,'Name4','ME','2015-02-04');                                                                                       
+    insert into STUDENT values(104,'Name5','CS','2014-01-01');  
+    insert into COURSE values(10,'SE','CSE');
+    insert into COURSE values(11,'DC','ECE');
+    insert into COURSE values(12,'CNS','ISE');
+    insert into COURSE values(13,'ATC','CSE');
+    insert into COURSE values(14,'DBMS','ME');
+    insert into TEXT1 values(1001,'PHY','PUB1','AUT1');
+    insert into TEXT1 values(1002,'CHE','PUB2','AUT2');
+    insert into TEXT1 values(1003,'MATHS','PUB3','AUT3');
+    insert into TEXT1 values(1004,'BIO','PUB4','AUT4');
+    insert into TEXT1 values(1005,'CS','PUB5','AUT5');
+    insert into BOOK_ADOPTION values(10,1,1005);
+    insert into BOOK_ADOPTION values(12,2,1002);
+    insert into BOOK_ADOPTION values(11,3,1001);
+    insert into BOOK_ADOPTION values(13,4,1005);
+    insert into BOOK_ADOPTION values(14,5,1004);
+    insert into ENROLL values(103,11,3,'A+');
+    insert into ENROLL values(104,10,1,'A');
+    insert into ENROLL values(102,12,2,'B');
+    insert into ENROLL values(101,14,5,'C');
+    insert into ENROLL values(104,13,4,'D');
+    
+
+---
+
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/hjHnTNadtv8qYzoX4LQh1M/0)
