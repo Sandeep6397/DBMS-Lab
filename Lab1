@@ -243,7 +243,6 @@ There are no results to be displayed.
 
 ---
 
-[View on DB Fiddle](https://www.db-fiddle.com/)
 **Schema (MySQL v5.7)**
 
     create table PUBLISHER(Name varchar(10) primary key,Address varchar(20),Phone varchar(10));
@@ -297,6 +296,18 @@ There are no results to be displayed.
     group by bc.book_id;
 
 There are no results to be displayed.
+
+---
+**Query #2**
+
+    select * from v1;
+
+| book_id | sum(bc.no_of_copies) |
+| ------- | -------------------- |
+| 10      | 25                   |
+| 20      | 15                   |
+| 30      | 30                   |
+| 40      | 7                    |
 
 ---
 
