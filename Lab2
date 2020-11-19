@@ -38,5 +38,14 @@
 | akash | 10          |
 
 ---
+**Query #2**
+
+    select Name,Salesman_id from SALESMAN S where 1<(select count(*) from ORDERS where S.Salesman_id=ORDERS.Salesman_id);
+
+| Name  | Salesman_id |
+| ----- | ----------- |
+| akash | 10          |
+
+---
 
 [View on DB Fiddle](https://www.db-fiddle.com/)
