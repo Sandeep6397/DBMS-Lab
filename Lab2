@@ -25,19 +25,17 @@
     insert into ORDERS values(552,2500,"2020-02-05",2000,20);
     insert into ORDERS values(553,500,"2020-03-03",3000,40);
     insert into ORDERS values(554,1500,"2020-04-02",4000,30);
+    insert into ORDERS values(555,2000,"2020-06-03",2000,10);
 
 ---
 
 **Query #1**
 
-    select Name,Salesman_id from SALESMAN where Salesman_id in(select Salesman_id from ORDERS group by Salesman_id having count(*) );
+    select Name,Salesman_id from SALESMAN where Salesman_id in(select Salesman_id from ORDERS group by Salesman_id having count(*)>1);
 
 | Name  | Salesman_id |
 | ----- | ----------- |
 | akash | 10          |
-| ram   | 20          |
-| raj   | 30          |
-| kiran | 40          |
 
 ---
 
