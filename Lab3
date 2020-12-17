@@ -57,3 +57,75 @@
 ---
 
 [View on DB Fiddle](https://www.db-fiddle.com/)
+**Schema (MySQL v5.7)**
+
+    create table ACTOR(Act_id integer primary key,Act_Name varchar(20),Act_Gender varchar(2));
+    create table DIRECTOR(Dir_id integer primary key,Dir_Name varchar(20),Dir_Phone varchar(10));
+    create table MOVIES(Mov_id integer primary key,Mov_Title varchar(20),Mov_Year integer,Mov_Lang varchar(10),Dir_id integer,foreign key(Dir_id) references DIRECTOR(Dir_id) on delete cascade);
+    create table MOVIE_CAST(Act_id integer,Mov_id integer,Role varchar(10),primary key(Act_id,Mov_id),foreign key(Act_id) references ACTOR(Act_id) on delete cascade,foreign key(Mov_id) references MOVIES(Mov_id) on delete cascade);
+    create table RATING(Mov_id integer primary key,Rev_Stars integer,foreign key(Mov_id) references MOVIES(Mov_id) on delete cascade);
+    insert into ACTOR values(100,'AAA','M');
+    insert into ACTOR values(101,'BBB','M');
+    insert into ACTOR values(102,'CCC','F');
+    insert into ACTOR values(103,'DDD','F');                                                                                        
+    insert into ACTOR values(104,'EEE','M'); 
+    insert into DIRECTOR values(1000,'Steven Spielberg','9900123167');   
+    insert into DIRECTOR values(1001,'GGG','8998126709');                                                                                         
+    insert into DIRECTOR values(1002,'HHH','9900256798');                                                                                         
+    insert into DIRECTOR values(1003,'III','7781673409');                                                                                         
+    insert into DIRECTOR values(1004,'Hitchcock','9865873421');                                                                                       
+    insert into MOVIES values(10,'ABC',1992,'KAN',1000);    
+    insert into MOVIES values(11,'BCD',2000,'ENG',1003);                                                                                         
+    insert into MOVIES values(12,'CDE',2005,'HIN',1002);                                                                                         
+    insert into MOVIES values(13,'DEF',2015,'TAM',1001);                                                                                         
+    insert into MOVIES values(14,'EFG',2019,'TUL',1004);                                                                                         
+    insert into MOVIES values(15,'FGH',2020,'TEL',1004); 
+    insert into MOVIE_CAST values(100,11,'HERO');   
+    insert into MOVIE_CAST values(100,12,'HEROIEN');                                                                                           
+    insert into MOVIE_CAST values(101,15,'VILLAIN');                                                                                           
+    insert into MOVIE_CAST values(101,11,'VILLAIN');                                                                                           
+    insert into MOVIE_CAST values(104,14,'HERO');
+    insert into MOVIE_CAST values(100,10,'HERO');
+    insert into RATING values(10,2); 
+    insert into RATING values(12,3);                                                                                           
+    insert into RATING values(11,5);                                                                                           
+    insert into RATING values(13,4);                                                                                           
+    insert into RATING values(14,5);                                                                                                                              
+
+---
+
+**Query #1**
+
+    select Mov_Title from DIRECTOR D,MOVIES M where D.Dir_id=M.Dir_id AND Dir_Name="Hitchcock";
+
+| Mov_Title |
+| --------- |
+| EFG       |
+| FGH       |
+
+---
+**Query #2**
+
+    select Mov_Title from MOVIES M,MOVIE_CAST MV where M.Mov_id= MV.Mov_id AND Act_id in(select Act_id from MOVIE_CAST group by Act_id having count(*)>1)group by Mov_title;
+
+| Mov_Title |
+| --------- |
+| ABC       |
+| BCD       |
+| CDE       |
+| FGH       |
+
+---
+**Query #3**
+
+    select Act_id from MOVIES M join MOVIE_CAST MC on M.Mov_id=MC.Mov_id where Mov_Year<2000 union select Act_id from MOVIES M join MOVIE_CAST MC on M.Mov_id=MC.Mov_id where Mov_Year>2015;
+
+| Act_id |
+| ------ |
+| 100    |
+| 104    |
+| 101    |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/a4dn4g54xhMFU4QAGYdMui/0)
